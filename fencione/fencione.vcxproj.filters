@@ -51,6 +51,12 @@
     <ClInclude Include="CstatisticSeg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="HMMSegDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HMMSeg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fencione.cpp">
@@ -72,6 +78,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CstatisticSeg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HMMSeg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="hmmsegdlg.CPP">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HMMSegDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

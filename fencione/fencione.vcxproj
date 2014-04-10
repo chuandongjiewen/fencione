@@ -104,6 +104,8 @@
     <ClInclude Include="CstatisticSeg.h" />
     <ClInclude Include="fencione.h" />
     <ClInclude Include="fencioneDlg.h" />
+    <ClInclude Include="HMMSeg.h" />
+    <ClInclude Include="HMMSegDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="SplitStr.h" />
@@ -115,6 +117,8 @@
     <ClCompile Include="CstatisticSeg.cpp" />
     <ClCompile Include="fencione.cpp" />
     <ClCompile Include="fencioneDlg.cpp" />
+    <ClCompile Include="HMMSeg.cpp" />
+    <ClCompile Include="HMMSegDlg.cpp" />
     <ClCompile Include="Segment.cpp" />
     <ClCompile Include="SplitStr.cpp" />
     <ClCompile Include="stdafx.cpp">

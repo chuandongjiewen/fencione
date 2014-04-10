@@ -11,6 +11,7 @@
 #include "resource.h"		// Ö÷·ûºÅ
 #include "fencioneDlg.h"
 #include "CstatisticFenciDialog.h"
+#include "HMMSegDlg.h"
 
 
 // CfencioneApp:
@@ -25,6 +26,7 @@ public:
 private:
 	CfencioneDlg *fencioneDlg;
 	CstatisticFenciDialog *statisticDlg;
+	CHMMSegDlg *hmmSegDlg;
 
 // ÖØÐ´
 public:

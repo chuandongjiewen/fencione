@@ -132,6 +132,18 @@ void CfencioneApp::Onstatistic()
 void CfencioneApp::OnHmm()
 {
 	// TODO: 在此添加命令处理程序代码
+	if (hmmSegDlg == NULL)
+	{
+		hmmSegDlg = new CHMMSegDlg();
+		INT_PTR response = hmmSegDlg->DoModal();
+		if (response == IDOK)
+		{
+			PostQuitMessage(0);
+		}
+	}else{
+		fencioneDlg->ShowWindow(SW_HIDE);
+		hmmSegDlg->ShowWindow(SW_SHOW);
+	}
 }
 
 

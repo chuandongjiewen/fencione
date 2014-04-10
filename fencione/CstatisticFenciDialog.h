@@ -1,5 +1,6 @@
 #pragma once
 #include "CstatisticSeg.h"
+#include "resource.h"
 #include "afxwin.h"
 
 
