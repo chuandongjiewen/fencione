@@ -54,7 +54,7 @@ void CHMMSeg::processTransition(CString dictPath)
 		CSplitStr splitWord;
 		splitWord.SetSplitFlag(_T("/"));
 		splitWord.SetSequenceAsOne(TRUE);
-		for (int i=0; i<len-1; i++)
+		for (int i=1; i<len-1; i++)
 		{
 			CStringArray iWordArr;
 			CStringArray jWordArr;
@@ -196,8 +196,8 @@ void CHMMSeg::writeTransition(CString path)
 		{
 			POS* pos = itJPos->second;
 			CString tmp;
-			tmp.Format(_T("%d %f\r\n"),pos->num,pos->frequency);
-			fout.WriteString(pos->iPos+_T(" ")+pos->jPos+_T(" ")+tmp);
+			tmp.Format(_T("%d,%f\r\n"),pos->num,pos->frequency);
+			fout.WriteString(pos->iPos+_T(",")+pos->jPos+_T(",")+tmp);
 			
 		}
 	}
@@ -299,19 +299,16 @@ void CHMMSeg::processEmission(CString dictPath)
 		CSplitStr splitWord;
 		splitWord.SetSplitFlag(_T("/"));
 		splitWord.SetSequenceAsOne(TRUE);
-		for (int i=0; i<len; i++)
+		for (int i=1; i<len; i++)//从1开始，去除日期
 		{
 			CStringArray iWordArr;
-			CStringArray jWordArr;
+
 			splitWord.SetData(lineArr[i]);
 			splitWord.GetSplitStrArray(iWordArr);
-
-			splitWord.SetData(lineArr[i+1]);
-			splitWord.GetSplitStrArray(jWordArr);
-			if (iWordArr.GetCount() >= 2 && jWordArr.GetCount() >=2)
+			if (iWordArr.GetCount() >= 2)
 			{
 				CString jPos = iWordArr[0];//词
-				CString iPos = jWordArr[1];//词性
+				CString iPos = iWordArr[1];//词性
 				createEmissionPos(iPos, jPos);
 			}
 
@@ -331,13 +328,13 @@ void CHMMSeg::processEmission(CString dictPath)
 }
 
 
-void CHMMSeg::createEmissionPos(CString iPos, CString jPos)
+POS* CHMMSeg::createEmissionPos(CString iPos, CString jPos)
 {
 	map<CString, ListPOS*>::iterator itIPos = emission.find(iPos);
 	ListPOS *listpos;
 	map<CString, POS*> posMap;
 	POS *pos;
-	if (itIPos == transition.end())
+	if (itIPos == emission.end())
 	{
 		listpos = new ListPOS();
 		posMap = listpos->posMap;
@@ -350,7 +347,9 @@ void CHMMSeg::createEmissionPos(CString iPos, CString jPos)
 		//pos->frequency = ((double)pos->num/listpos->sum);
 		posMap[jPos] = pos;
 		listpos->posMap = posMap;
-		transition[iPos] = listpos;
+		emission[iPos] = listpos;
+
+		wordsVect.push_back(jPos);//将该词加入到词典向量中
 	}else{
 		listpos = itIPos->second;
 		posMap = listpos->posMap;
@@ -367,6 +366,7 @@ void CHMMSeg::createEmissionPos(CString iPos, CString jPos)
 			posMap[jPos] = pos;
 
 			listpos->posMap = posMap;
+			wordsVect.push_back(jPos);//将该词加入到词典向量中
 		}else{
 			listpos->sum += 1;
 
@@ -375,4 +375,77 @@ void CHMMSeg::createEmissionPos(CString iPos, CString jPos)
 		}
 	}
 	return pos;
+}
+
+void CHMMSeg::calEmission(int m, double p)
+{
+	vector<CString> keyVect;//词性集合
+	for(map<CString, ListPOS*>::iterator itIPos = emission.begin(); itIPos != emission.end(); itIPos ++)
+	{
+		keyVect.push_back(itIPos->first);
+	}
+
+	for (vector<CString>::iterator i = keyVect.begin(); i != keyVect.end(); i++)
+	{
+		map<CString,ListPOS*>::iterator itIPos = emission.find(*i);
+		ListPOS *listPos = itIPos->second;
+		int sum = listPos->sum; //如：标记为词性V的词的总和
+		map<CString, POS*> posMap = listPos->posMap; //词的map
+		for (vector<CString>::iterator j = wordsVect.begin(); j != wordsVect.end(); j++)
+		{
+			map<CString, POS*>::iterator itJPos = posMap.find(*j);
+			POS *pos;
+			if (itJPos != posMap.end())
+			{
+				pos = itJPos->second;
+				pos->frequency = ((double)(pos->num + m*p)) / (sum + m);
+			}else{
+				pos = new POS();
+				pos->iPos = *i;
+				pos->jPos = *j;
+				pos->num = 0;
+				pos->frequency = ((double) 0 + m*p) / (sum + m);
+				posMap[*j] = pos;
+			}
+		}
+		listPos->posMap = posMap;
+	}
+	
+}
+
+
+void CHMMSeg::writeEmission(CString path)
+{
+	CStdioFile fout;
+	BOOL isopen = fout.Open(path, CFile::modeReadWrite|CFile::modeCreate);
+	if (!isopen)
+	{
+		return;
+	}
+	fout.SeekToBegin();
+	char* old_locale = _strdup(setlocale(LC_CTYPE,NULL));
+	setlocale( LC_CTYPE, "chs" );//设定
+
+	map<CString, ListPOS*>::iterator itIPos;
+	for(itIPos = emission.begin(); itIPos != emission.end(); itIPos ++)
+	{
+		ListPOS *listPos = itIPos->second;
+		OutputDebugStringW(itIPos->first + _T("--first-"));
+		map<CString, POS*> posMap = listPos->posMap;
+		map<CString, POS*>::iterator itJPos;
+		for (itJPos = posMap.begin(); itJPos != posMap.end(); itJPos++)
+		{
+			POS* pos = itJPos->second;
+			CString tmp;
+			tmp.Format(_T("%d,%f\r\n"),pos->num,pos->frequency);
+			fout.WriteString(pos->iPos+_T(",")+pos->jPos+_T(",")+tmp);
+
+		}
+	}
+
+	setlocale( LC_CTYPE, old_locale );
+	free(old_locale);//还原区域设定
+
+	fout.Flush();
+	fout.Close();
 }

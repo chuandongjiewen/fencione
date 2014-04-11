@@ -49,6 +49,11 @@ void CHMMSegDlg::OnBnClickedProcess()
 	seg->processTransition(_T("../dict/199801.txt"));
 	seg->calTransition(10, 0.5);
 	seg->writeTransition(_T("../dict/transition.txt"));
+
+	seg->processEmission(_T("../dict/199801.txt"));
+	seg->calEmission(10,0.5);
+	seg->writeEmission(_T("../dict/emission.txt"));
+	
 }
 
 

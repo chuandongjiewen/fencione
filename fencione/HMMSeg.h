@@ -29,6 +29,7 @@ class CHMMSeg
 private:
 	map<CString, ListPOS*> transition;//转移概率
 	map<CString, ListPOS*> emission;//发射概率
+	vector<CString> wordsVect;
 
 public:
 	CHMMSeg(void);
@@ -45,7 +46,9 @@ public:
 
 	//---------------发射概率的计算----------------------------------------------
 	void processEmission(CString dictPath);
-	void createEmissionPos(CString iPos, CString jPos);// ipos 为词项，jPos为词性
+	POS* createEmissionPos(CString iPos, CString jPos);// ipos 为词项，jPos为词性
+	void calEmission(int m, double p);
+	void writeEmission(CString path);
 };
 
 
