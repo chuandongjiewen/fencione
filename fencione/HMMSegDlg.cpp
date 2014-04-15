@@ -32,6 +32,8 @@ void CHMMSegDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CHMMSegDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_PROCESS, &CHMMSegDlg::OnBnClickedProcess)
 	ON_BN_CLICKED(IDOK, &CHMMSegDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BEGEIN, &CHMMSegDlg::OnBnClickedBegein)
+	ON_BN_CLICKED(IDC_lOAD_DICT, &CHMMSegDlg::OnBnClickedloadDict)
 END_MESSAGE_MAP()
 
 
@@ -40,21 +42,31 @@ END_MESSAGE_MAP()
 BOOL CHMMSegDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	seg = new CHMMSeg();
+	seg = new CHmm();
+	seg->loadInit(_T("../dict/init.txt"));
+	seg->loadEmission(_T("../dict/emission.txt"));
+	seg->loadTransition(_T("../dict/tran.txt"))	;
+
 	return TRUE;
 }
 
 void CHMMSegDlg::OnBnClickedProcess()
 {
-	seg->processTransition(_T("../dict/199801.txt"));
-	seg->calTransition(10, 0.5);
-	seg->writeTransition(_T("../dict/transition.txt"));
+	
 
-	seg->processEmission(_T("../dict/199801.txt"));
-	seg->calEmission(10,0.5);
-	seg->writeEmission(_T("../dict/emission.txt"));
+}
+
+
+
+void CHMMSegDlg::OnBnClickedBegein()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	//seg->loadInit(_T("../dict/init.txt"));
 	
 }
+
+
 
 
 void CHMMSegDlg::OnBnClickedOk()
@@ -62,4 +74,12 @@ void CHMMSegDlg::OnBnClickedOk()
 	// TODO: 在此添加控件通知处理程序代码
 	//delete seg;
 	CDialogEx::OnOK();
+}
+
+void CHMMSegDlg::OnBnClickedloadDict()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	//seg->loadTransition(_T("../dict/tran.txt"))	;
+	seg->init();
+	seg->calculate();
 }

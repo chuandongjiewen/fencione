@@ -1,6 +1,6 @@
 #pragma once
 #include "afxwin.h"
-#include "HMMSeg.h"
+#include "Hmm.h"
 #include "resource.h"
 
 
@@ -24,11 +24,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CHMMSeg *seg;
+	CHmm *seg;
 
 public:
 	CEdit outputEdit;
 	CEdit inputEdit;
 	afx_msg void OnBnClickedProcess();
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedBegein();
+	afx_msg void OnBnClickedloadDict();
 };

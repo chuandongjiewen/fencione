@@ -57,6 +57,9 @@
     <ClInclude Include="HMMSeg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Hmm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fencione.cpp">
@@ -87,6 +90,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="HMMSegDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Hmm.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
