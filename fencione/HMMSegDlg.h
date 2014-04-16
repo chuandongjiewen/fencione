@@ -1,6 +1,7 @@
 #pragma once
 #include "afxwin.h"
 #include "Hmm.h"
+#include "CstatisticSeg.h"
 #include "resource.h"
 
 
@@ -24,7 +25,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CHmm *seg;
+	CHmm *hmm;
+	CstatisticSeg *seg;
 
 public:
 	CEdit outputEdit;

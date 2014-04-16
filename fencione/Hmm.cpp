@@ -6,6 +6,7 @@ CHmm::CHmm(void)
 {
 	m = 10;
 	p = 0.5;
+	maxLastVet = NULL;
 }
 
 
@@ -13,6 +14,20 @@ CHmm::~CHmm(void)
 {
 }
 
+void CHmm::reset()
+{
+	wordsVect.clear();
+	maxLastVet = NULL;
+	lastVetVector.clear();
+	resultMap.clear();
+}
+
+void CHmm::setWords(vector<CString> data)
+{
+	this->reset();
+	this->wordsVect = data;
+	this->init();
+}
 
 void CHmm::loadInit(CString path)
 {
@@ -199,10 +214,10 @@ void CHmm::loadTransition(CString path)
 
 void CHmm::init()
 {
-	wordsVect.push_back(_T("结合"));
+	/*wordsVect.push_back(_T("结合"));
 	wordsVect.push_back(_T("成"));
 	wordsVect.push_back(_T("分子"));
-	wordsVect.push_back(_T("时"));
+	wordsVect.push_back(_T("时"));*/
 	for (vector<CString>::iterator iterPos = posVect.begin(); iterPos != posVect.end(); iterPos++)
 	{
 		CString word = wordsVect.at(0);
@@ -225,6 +240,7 @@ void CHmm::init()
 		vet->pos = ipos;
 		vet->word = word;
 		vet->frequency = initFrequency * emFrequency;
+		vet->preVet  =NULL;
 		resultMap[key] = vet;
 		
 	}
@@ -295,6 +311,27 @@ void CHmm::calculate()
 			curVet->preVet = maxPreVet;
 			curVet->frequency = maxLastFreqency*emFrequency;//前项乘以发射概率
 			resultMap[curKey] = curVet;
+
+			if (i == wordsVect.size() - 1)
+			{
+				if (maxLastVet == NULL || curVet->frequency > maxLastVet->frequency)
+				{
+					maxLastVet = curVet;
+				}
+				lastVetVector.push_back(curVet);
+			}
 		}
 	}
+}
+
+CString CHmm::output()
+{
+	CString resultStr = _T("");
+	Vet *tmpVet = maxLastVet;
+	while(tmpVet->preVet != NULL)
+	{
+		resultStr = tmpVet->word + _T("/") + tmpVet->pos  + _T(" ") + resultStr ;
+		tmpVet = tmpVet->preVet;
+	}
+	return resultStr;
 }

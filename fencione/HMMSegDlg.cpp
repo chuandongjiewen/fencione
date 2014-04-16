@@ -42,11 +42,13 @@ END_MESSAGE_MAP()
 BOOL CHMMSegDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	seg = new CHmm();
-	seg->loadInit(_T("../dict/init.txt"));
-	seg->loadEmission(_T("../dict/emission.txt"));
-	seg->loadTransition(_T("../dict/tran.txt"))	;
+	hmm = new CHmm();
+	hmm->loadInit(_T("../dict/init.txt"));
+	hmm->loadEmission(_T("../dict/emission.txt"));
+	hmm->loadTransition(_T("../dict/tran.txt"))	;
 
+	seg = new CstatisticSeg();
+	seg->loadDict(_T("../dict/WordFrequency.txt"));
 	return TRUE;
 }
 
@@ -63,7 +65,23 @@ void CHMMSegDlg::OnBnClickedBegein()
 	// TODO: 在此添加控件通知处理程序代码
 
 	//seg->loadInit(_T("../dict/init.txt"));
+	CString sourceStr;
+	inputEdit.GetWindowTextW(sourceStr);
+	seg->init();
+	CString tmpStr = seg->doCut(sourceStr);
+
+	vector<CString> wordsVector = seg->resultVect;
+
 	
+	if (wordsVector.size() == 0)
+	{
+		return;
+	}
+	std::reverse(wordsVector.begin(), wordsVector.end());
+	hmm->setWords(wordsVector);
+	hmm->calculate();
+	CString resultStr = hmm->output();
+	outputEdit.SetWindowTextW(resultStr);
 }
 
 
@@ -80,6 +98,5 @@ void CHMMSegDlg::OnBnClickedloadDict()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	//seg->loadTransition(_T("../dict/tran.txt"))	;
-	seg->init();
-	seg->calculate();
+	
 }

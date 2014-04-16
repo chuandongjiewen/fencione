@@ -37,6 +37,7 @@ public:
 	void loadDict(CString dictPath);
 	CString doCut(CString sentence);
 	void init();
+	vector<CString> resultVect;//最终分词的结果
 	
 	//bool compareWord(const WordItem &item1, const WordItem &item2);
 
@@ -48,6 +49,7 @@ private:
 	map<CString, DictItem> dictionary;//词典
 	map<CString, WordItem> sourceWordMap;//key 存当前
 	map<int, vector<WordItem>> leftWordMap;
+	
 	
 	WordItem lastWord;
 

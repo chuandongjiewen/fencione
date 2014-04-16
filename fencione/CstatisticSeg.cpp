@@ -86,6 +86,7 @@ CString CstatisticSeg::output()
 	while((it = sourceWordMap.find(key)) != sourceWordMap.end())
 	{
 		tmpWord = it->second;
+		resultVect.push_back(tmpWord.leftWord);
 		result =  tmpWord.leftWord + _T("/ ") +result;
 		int leftWordStart = tmpWord.start - tmpWord.leftWord.GetLength();
 		if (leftWordStart == 0)

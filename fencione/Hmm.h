@@ -38,6 +38,8 @@ public:
 
 	//存储所有路线的 key: id,word,pos 
 	map<CString, Vet*> resultMap;
+	vector<Vet*> lastVetVector;
+	Vet *maxLastVet;
 
 public:
 	CHmm(void);
@@ -49,6 +51,11 @@ public:
 
 	void init();
 	void calculate();
+	void setWords(vector<CString> data);
+	CString output();
+
+private: 
+	void reset();
 
 };
 
