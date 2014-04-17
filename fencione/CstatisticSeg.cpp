@@ -16,6 +16,7 @@ void CstatisticSeg::init()
 	this->cutTime=0;
 	this->sourceWordMap.clear();
 	this->leftWordMap.clear();
+	this->resultVect.clear();
 }
 
 CString CstatisticSeg::doCut(CString sentence)
@@ -83,6 +84,7 @@ CString CstatisticSeg::output()
 	map<CString, WordItem>::iterator it;
 	CString key = _T("");
 	key.Format(_T("%d")+tmpWord.word, tmpWord.start);
+	resultVect.push_back(tmpWord.word);//push最后一个单词
 	while((it = sourceWordMap.find(key)) != sourceWordMap.end())
 	{
 		tmpWord = it->second;

@@ -22,6 +22,12 @@ void CHmm::reset()
 	resultMap.clear();
 }
 
+void CHmm::setEstimate(int m, double p)
+{
+	this->m = m;
+	this->p = p;
+}
+
 void CHmm::setWords(vector<CString> data)
 {
 	this->reset();
@@ -330,7 +336,7 @@ CString CHmm::output()
 	Vet *tmpVet = maxLastVet;
 	while(tmpVet != NULL)
 	{
-		resultStr = tmpVet->word + _T("/") + tmpVet->pos  + _T(" ") + resultStr ;
+		resultStr = tmpVet->word + _T("/") + tmpVet->pos  + _T("  ") + resultStr ;
 		tmpVet = tmpVet->preVet;
 	}
 	return resultStr;

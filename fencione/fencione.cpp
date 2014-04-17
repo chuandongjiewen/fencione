@@ -105,6 +105,10 @@ void CfencioneApp::Onmachine()
 	{
 		statisticDlg->ShowWindow(SW_HIDE);
 	}
+	if (hmmSegDlg != NULL)
+	{
+		hmmSegDlg->ShowWindow(SW_HIDE);
+	}
 	fencioneDlg->ShowWindow(SW_SHOW);
 
 }
@@ -121,6 +125,10 @@ void CfencioneApp::Onstatistic()
 			PostQuitMessage(0);
 		}
 	}else{
+		if (hmmSegDlg != NULL)
+		{
+			hmmSegDlg->ShowWindow(SW_HIDE);
+		}
 		fencioneDlg->ShowWindow(SW_HIDE);
 		statisticDlg->ShowWindow(SW_SHOW);
 	}
@@ -141,6 +149,10 @@ void CfencioneApp::OnHmm()
 			PostQuitMessage(0);
 		}
 	}else{
+		if (statisticDlg != NULL) 
+		{
+			statisticDlg->ShowWindow(SW_HIDE);
+		}
 		fencioneDlg->ShowWindow(SW_HIDE);
 		hmmSegDlg->ShowWindow(SW_SHOW);
 	}

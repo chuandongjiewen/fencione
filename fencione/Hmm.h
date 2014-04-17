@@ -51,6 +51,7 @@ public:
 
 	void init();
 	void calculate();
+	void setEstimate(int m, double p);//设置m估计的数据平滑
 	void setWords(vector<CString> data);
 	CString output();
 

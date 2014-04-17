@@ -26,14 +26,15 @@ void CHMMSegDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_output, outputEdit);
 	DDX_Control(pDX, IDC_input, inputEdit);
+	DDX_Control(pDX, IDC_EDIT_M, est_m_edit);
+	DDX_Control(pDX, IDC_EDIT_P, est_p_edit);
+	DDX_Control(pDX, IDC_STATIC_DETAIL, detail_Static);
 }
 
 
 BEGIN_MESSAGE_MAP(CHMMSegDlg, CDialogEx)
-	ON_BN_CLICKED(IDC_PROCESS, &CHMMSegDlg::OnBnClickedProcess)
 	ON_BN_CLICKED(IDOK, &CHMMSegDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BEGEIN, &CHMMSegDlg::OnBnClickedBegein)
-	ON_BN_CLICKED(IDC_lOAD_DICT, &CHMMSegDlg::OnBnClickedloadDict)
 END_MESSAGE_MAP()
 
 
@@ -49,13 +50,10 @@ BOOL CHMMSegDlg::OnInitDialog()
 
 	seg = new CstatisticSeg();
 	seg->loadDict(_T("../dict/WordFrequency.txt"));
+
+	est_m_edit.SetWindowTextW(_T("10"));
+	est_p_edit.SetWindowTextW(_T("0.000001"));
 	return TRUE;
-}
-
-void CHMMSegDlg::OnBnClickedProcess()
-{
-	
-
 }
 
 
@@ -63,8 +61,29 @@ void CHMMSegDlg::OnBnClickedProcess()
 void CHMMSegDlg::OnBnClickedBegein()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	
+	CString mStr;
+	est_m_edit.GetWindowTextW(mStr);
 
-	//seg->loadInit(_T("../dict/init.txt"));
+	CString pStr;
+	est_p_edit.GetWindowTextW(pStr);
+
+	double m = _ttoi(mStr);
+	double p = _tstof(pStr);
+
+	if (m <=0)
+	{
+		AfxMessageBox(_T("m的值必须为大于0的小数"),MB_YESNO|MB_ICONQUESTION);
+		return;
+	}
+
+	if (p<=0 || p > 1)
+	{
+		AfxMessageBox(_T("p的值必须为大于等于0且小于1的小数"),MB_YESNO|MB_ICONQUESTION);
+		return;
+	}
+	int beginTime = GetTickCount();
+
 	CString sourceStr;
 	inputEdit.GetWindowTextW(sourceStr);
 	seg->init();
@@ -75,13 +94,22 @@ void CHMMSegDlg::OnBnClickedBegein()
 	
 	if (wordsVector.size() == 0)
 	{
+		AfxMessageBox(_T("请输入正确的句子"),MB_YESNO|MB_ICONQUESTION);
 		return;
 	}
 	
+	hmm->setEstimate(m,p);
 	hmm->setWords(wordsVector);
 	hmm->calculate();
 	CString resultStr = hmm->output();
 	outputEdit.SetWindowTextW(resultStr);
+
+	int endTime = GetTickCount();
+
+	int time = endTime - beginTime;
+	CString detailStr;
+	detailStr.Format(_T("总共耗时：%d ms"), time);
+	detail_Static.SetWindowTextW(detailStr);
 }
 
 
@@ -92,11 +120,5 @@ void CHMMSegDlg::OnBnClickedOk()
 	// TODO: 在此添加控件通知处理程序代码
 	//delete seg;
 	CDialogEx::OnOK();
-}
-
-void CHMMSegDlg::OnBnClickedloadDict()
-{
-	// TODO: 在此添加控件通知处理程序代码
-	//seg->loadTransition(_T("../dict/tran.txt"))	;
-	
+	this->SendMessage(WM_CLOSE);
 }

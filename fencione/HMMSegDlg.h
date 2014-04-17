@@ -31,8 +31,11 @@ private:
 public:
 	CEdit outputEdit;
 	CEdit inputEdit;
-	afx_msg void OnBnClickedProcess();
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedBegein();
-	afx_msg void OnBnClickedloadDict();
+	// //m估计的m默认为10
+	CEdit est_m_edit;
+	// //m估计的p默认为0.000001
+	CEdit est_p_edit;
+	CStatic detail_Static;
 };

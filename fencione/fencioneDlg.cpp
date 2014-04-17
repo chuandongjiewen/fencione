@@ -28,6 +28,8 @@ public:
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedOk();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -40,6 +42,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CAboutDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -294,4 +297,12 @@ void CfencioneDlg::OnUpdatestatistic(CCmdUI *pCmdUI)
 	CstatisticFenciDialog dialog;
 	dialog.DoModal();
 	this->ShowWindow(SW_SHOW);*/
+}
+
+
+void CAboutDlg::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CDialogEx::OnOK();
+	this->SendMessage(WM_CLOSE);
 }

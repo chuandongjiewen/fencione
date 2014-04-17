@@ -67,6 +67,7 @@ void CstatisticFenciDialog::OnBnClickedOk()
 	// TODO: 在此添加控件通知处理程序代码
 	ShowWindow(false);
 	CDialogEx::OnOK();
+	this->SendMessage(WM_CLOSE);
 }
 
 
