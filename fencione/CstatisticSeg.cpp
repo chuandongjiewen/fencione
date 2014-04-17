@@ -23,6 +23,7 @@ CString CstatisticSeg::doCut(CString sentence)
 {
 	long begin = GetTickCount();
 	int position = 0;
+	sentence.Replace(_T(" "), _T(""));
 	int sumLen = sentence.GetLength();
 	while(position < sumLen)
 	{

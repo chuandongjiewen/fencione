@@ -47,6 +47,8 @@ BOOL CstatisticFenciDialog::OnInitDialog()
 
 	pSeg = new CstatisticSeg();
 	isLoadedDict = false;
+	pSeg->loadDict(_T("../dict/WordFrequency.txt"));
+	isLoadedDict = true;
 
 	return TRUE;
 }
@@ -66,7 +68,7 @@ void CstatisticFenciDialog::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	ShowWindow(false);
-	CDialogEx::OnOK();
+	//CDialogEx::OnOK();
 	this->SendMessage(WM_CLOSE);
 }
 

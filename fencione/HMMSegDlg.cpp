@@ -119,6 +119,6 @@ void CHMMSegDlg::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	//delete seg;
-	CDialogEx::OnOK();
+	//CDialogEx::OnOK();
 	this->SendMessage(WM_CLOSE);
 }
