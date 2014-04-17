@@ -95,6 +95,10 @@ CString CstatisticSeg::output()
 		}
 		key.Format(_T("%d")+tmpWord.leftWord, leftWordStart);
 	}
+
+	//将结果reverse以正序
+	std::reverse(resultVect.begin(), resultVect.end());
+
 	return result;
 }
 

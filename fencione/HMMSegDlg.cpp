@@ -77,7 +77,7 @@ void CHMMSegDlg::OnBnClickedBegein()
 	{
 		return;
 	}
-	std::reverse(wordsVector.begin(), wordsVector.end());
+	
 	hmm->setWords(wordsVector);
 	hmm->calculate();
 	CString resultStr = hmm->output();
