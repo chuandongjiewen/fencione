@@ -5,7 +5,7 @@
 CHmm::CHmm(void)
 {
 	m = 10;
-	p = 0.5;
+	p = 0.000001;
 	maxLastVet = NULL;
 }
 
@@ -328,7 +328,7 @@ CString CHmm::output()
 {
 	CString resultStr = _T("");
 	Vet *tmpVet = maxLastVet;
-	while(tmpVet->preVet != NULL)
+	while(tmpVet != NULL)
 	{
 		resultStr = tmpVet->word + _T("/") + tmpVet->pos  + _T(" ") + resultStr ;
 		tmpVet = tmpVet->preVet;
